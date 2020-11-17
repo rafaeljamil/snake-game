@@ -9,6 +9,10 @@ snake[0] = {
     y: 8*box
 }
 let direction = "right";
+let fruit = {
+    x: Math.floor(Math.random() * 15 + 1) * box,
+    y: Math.floor(Math.random() * 15 + 1) * box
+}
 
 //Function to draw the background
 
@@ -24,6 +28,11 @@ function setSnake(){
         context.fillStyle = "black";
         context.fillRect(snake[i].x, snake[i].y, box, box);
     }
+}
+
+function drawFruit(){
+    context.fillStyle = "red";
+    context.fillRect(fruit.x, fruit.y, box, box);
 }
 
 //Event calls the update function when a key is pressed
@@ -57,6 +66,7 @@ function start(){
 
     setBackground();
     setSnake();
+    drawFruit();
 
     //Defining orientation
 
