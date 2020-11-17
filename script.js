@@ -3,12 +3,16 @@
 let canvas = document.getElementById("game");
 let context = canvas.getContext("2d");
 let box = 32;
+let speed = 1;
 let snake = [];
 snake[0] = {
     x: 8*box,
     y: 8*box
 }
 let direction = "right";
+
+//Creating the fruit object with random placement
+
 let fruit = {
     x: Math.floor(Math.random() * 15 + 1) * box,
     y: Math.floor(Math.random() * 15 + 1) * box
@@ -30,6 +34,8 @@ function setSnake(){
     }
 }
 
+//Function to draw the fruit
+
 function drawFruit(){
     context.fillStyle = "red";
     context.fillRect(fruit.x, fruit.y, box, box);
@@ -42,7 +48,7 @@ document.addEventListener("keydown", update);
 //Function update handles the key pressed and set directions
 
 function update(event){
-    //Updates the direction var according to the keyboard arrows
+    //Updates the direction variable according to the keyboard arrows
 
     if(event.keyCode == 37 && direction != "right") direction = "left";
     if(event.keyCode == 38 && direction != "down") direction = "up";
@@ -62,7 +68,16 @@ function start(){
     if(snake[0].y < 0 && direction == "up") snake[0].y = 15 * box;
     if(snake[0].y > 15*box && direction == "down") snake[0].y = 0;
 
-    //Drawing background and snake
+    //Check if snake hits itself and if it does then game over
+
+    for(i = 1; i < snake.length; i++){
+        if (snake[0].x == snake[i].x && snake[0].y == snake[i].y){
+            clearInterval(game);
+            alert("Game over :'(");
+        }
+    }
+
+    //Drawing background, snake and fruit
 
     setBackground();
     setSnake();
@@ -80,10 +95,18 @@ function start(){
     if(direction == "up") snakeY -= box;
     if(direction == "down") snakeY += box;
 
-    //Taking last snake position off the array
-    // to get the moving effect
+    //Checking if snake collides with the fruit,
+    //keeping snake size if it doesn't 
+    //and redrawing the fruit if it does
 
-    snake.pop();
+    if(snakeX != fruit.x || snakeY != fruit.y){
+        snake.pop();
+    }else{
+        fruit.x = Math.floor(Math.random() * 15 + 1) * box;
+        fruit.y = Math.floor(Math.random() * 15 + 1) * box;
+        // speed += 0.5;
+        // setInterval(300/speed);
+    }
 
     //Defining snake's head
 
@@ -99,4 +122,4 @@ function start(){
 
 //Interval for game updates
 
-let game = setInterval(start, 300);
+let game = setInterval(start, (300 / speed));
