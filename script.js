@@ -21,7 +21,7 @@ let fruit = {
 //Function to draw the background
 
 function setBackground(){
-    context.fillStyle = "green";
+    context.fillStyle = "lightgreen";
     context.fillRect(0, 0, 16 * box, 16 * box);
 }
 
@@ -29,7 +29,7 @@ function setBackground(){
 
 function setSnake(){
     for(i = 0; i < snake.length; i++){
-        context.fillStyle = "black";
+        context.fillStyle = "green";
         context.fillRect(snake[i].x, snake[i].y, box, box);
     }
 }
@@ -37,7 +37,7 @@ function setSnake(){
 //Function to draw the fruit
 
 function drawFruit(){
-    context.fillStyle = "red";
+    context.fillStyle = "brown";
     context.fillRect(fruit.x, fruit.y, box, box);
 }
 
