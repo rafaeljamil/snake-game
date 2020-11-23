@@ -1,15 +1,23 @@
-//Variable declarations
-
-let canvas = document.getElementById("game");
+let canvas = document.querySelector(".canvas");
 let context = canvas.getContext("2d");
+let strtBtn = document.querySelector(".start");
+let stopBtn = document.querySelector(".stop");
+let okBtn = document.querySelector(".okBtn");
+let score = document.querySelector(".score");
+let diff = document.getElementsByName("diff");
+let gameOver = document.querySelector(".game-over");
+let finalScore = document.querySelector(".final-score");
+let diffValue = "";
+let diffNum = 0
+let gameScore = 0;
 let box = 32;
-let speed = 1;
+let direction = "right";
 let snake = [];
+
 snake[0] = {
     x: 8*box,
     y: 8*box
-}
-let direction = "right";
+};
 
 //Creating the fruit object with random placement
 
@@ -59,21 +67,45 @@ function update(event){
 //Function Start calls the background and snake drawing,
 //gets directions and sets the movement effect
 
-function start(){
+function getDiff(){
+    for(i=0;i<diff.length;i++){
+        if(diff[i].checked){
+            diffValue = diff[i].value;
+
+            switch(diffValue){
+                case "easy":
+                    diffNum = 300;
+                    break;
+                case "medium":
+                    diffNum = 200;
+                    break;
+                case "hard":
+                    diffNum = 100;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+function startGame(){
+
+
     //Making snake come back on the opposite side of screen
     //when reaching end of canvas
 
-    if(snake[0].x > 15*box && direction == "right") snake[0].x = 0;
-    if(snake[0].x < 0 && direction == "left") snake[0].x = 15 * box;
-    if(snake[0].y < 0 && direction == "up") snake[0].y = 15 * box;
-    if(snake[0].y > 15*box && direction == "down") snake[0].y = 0;
+    if(snake[0].x > 15*box) snake[0].x = 0;
+    if(snake[0].x < 0) snake[0].x = 15*box;
+    if(snake[0].y > 15*box) snake[0].y = 0;
+    if(snake[0].y < 0) snake[0].y = 15*box;
 
     //Check if snake hits itself and if it does then game over
 
     for(i = 1; i < snake.length; i++){
         if (snake[0].x == snake[i].x && snake[0].y == snake[i].y){
-            clearInterval(game);
-            alert("Game over :'(");
+            clearInterval(start);
+            gameIsOver();
         }
     }
 
@@ -82,6 +114,7 @@ function start(){
     setBackground();
     setSnake();
     drawFruit();
+    score.innerHTML = "Score: "+gameScore;
 
     //Defining orientation
 
@@ -102,10 +135,10 @@ function start(){
     if(snakeX != fruit.x || snakeY != fruit.y){
         snake.pop();
     }else{
+        gameScore++;
         fruit.x = Math.floor(Math.random() * 15 + 1) * box;
         fruit.y = Math.floor(Math.random() * 15 + 1) * box;
-        // speed += 0.5;
-        // setInterval(300/speed);
+
     }
 
     //Defining snake's head
@@ -122,4 +155,44 @@ function start(){
 
 //Interval for game updates
 
-let game = setInterval(start, (300 / speed));
+
+function start(){
+    getDiff();
+    if (diffNum == 300){
+        setInterval(startGame, 300);
+    }else if(diffNum == 200){
+        setInterval(startGame, 200);
+    }else if(diffNum == 100){
+        setInterval(startGame, 100);
+    }else{
+        setInterval(startGame, 75);
+    }
+
+    canvas.classList.remove("hidden");
+    score.classList.remove("hidden");
+    strtBtn.classList.add("hidden");
+    document.querySelector(".difficulty").classList.add("hidden");
+    document.querySelector("h1").classList.add("hidden");
+    stopBtn.classList.remove("hidden");
+    console.log("Game starting");
+
+    console.log("diffNum = "+diffNum);
+    console.log("diffValue = "+diffValue);
+}
+
+function stop(){
+
+    location.reload();
+}
+
+function gameIsOver(){
+    canvas.classList.add("hidden");
+    score.classList.add("hidden");
+    stopBtn.classList.add("hidden");
+    gameOver.classList.remove("hidden");
+    finalScore.innerHTML = "Your Score Was: "+gameScore;
+}
+
+strtBtn.addEventListener("click", start);
+stopBtn.addEventListener("click", stop);
+okBtn.addEventListener("click", stop);

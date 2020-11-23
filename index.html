@@ -1,15 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html>
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script defer src="/script.js"></script>
     <title>Snake</title>
-</head>
-<body>
-    <h1>OMG Snakes!</h1>
-    <canvas id="game" width="512" height="512"></canvas>
-    
-</body>
+    <link rel="stylesheet" href="index.css">
+    <script defer src="game.js"></script>
+  </head>
+  <body>
+    <h1>Snake Game</h1>
+    <div class="game">
+      <div class="menu">
+        <div class="difficulty">
+          <h2>Difficulty:</h2>
+          <input type="radio" name="diff" value="easy">Easy
+          <br>
+          <input type="radio" name="diff" value="medium">Medium
+          <br>
+          <input type="radio" name="diff" value="hard">Hard
+          <br>
+        </div>
+        <div class="strt">
+          <button class="start">Start</button>
+        </div>
+        <div class="stp">
+          <button class="stop hidden">Stop</button>
+          <h3 class="score hidden">Score: </h3>
+        </div>
+          
+
+      </div>
+      <div class="main-window">
+        <canvas class="canvas hidden" width="512" height="512"></canvas>
+      </div>
+    </div>
+    <div class="game-over hidden">
+      <h2>Game Over!</h2>
+      <h3 class="final-score"></h3>
+      <button class="okBtn">OK</button>
+    </div>
+  </body>
 </html>
